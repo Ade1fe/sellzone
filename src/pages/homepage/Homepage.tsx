@@ -1,11 +1,15 @@
 import { Box } from '@chakra-ui/react'
-import React from 'react'
-import { HeroComp } from '..'
+import { Categories, HeroComp, Navbar, SectionPage } from '..'
 
 const Homepage = () => {
   return (
     <Box>
+      <Navbar />
       <HeroComp />
+    <Box className="" pos='relative' >
+    <Categories />
+    </Box>
+      <SectionPage />
     </Box>
   )
 }

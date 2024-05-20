@@ -1,8 +1,8 @@
 
-
 import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { ChakraBaseProvider,  } from '@chakra-ui/react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { ChakraBaseProvider, ChakraProvider } from '@chakra-ui/react';
 import { auth, onAuthStateChanged } from './firebase'; 
 import router from './Router';
 import './index.css';
@@ -23,9 +23,9 @@ function App() {
 
   return (
     <>
-          <ChakraBaseProvider >
+          <ChakraProvider >
         <RouterProvider router={router}></RouterProvider>
-      </ChakraBaseProvider>
+      </ChakraProvider>
     </>
   );
 }
