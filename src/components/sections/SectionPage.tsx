@@ -3,6 +3,9 @@ import { Box } from '@chakra-ui/react'
 import FirstSection from './FirstSection'
 import SecondSection from './SecondSection'
 import ThirdSection from './ThirdSection'
+import FourSection from './FourSection'
+import FiveSection from './FiveSection'
+import SixSection from './SixSection'
 
 const SectionPage = () => {
   return (
@@ -10,6 +13,9 @@ const SectionPage = () => {
      <FirstSection />
       <SecondSection />
       <ThirdSection />
+      <FourSection />
+      <FiveSection />
+      <SixSection />
     </Box>
   )
 }

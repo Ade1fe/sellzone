@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import FirstSecCard from '../cards/FirstSecCard';
@@ -7,13 +6,13 @@ import ReusableCarousel from '../carousels/ResuableCarousel';
 const ACCESS_KEY = '3eFu-T8CqNBo7CJcD9Ceoth7k8QVOym0H7rR4bpW8d4';
 const API_URL = 'https://api.unsplash.com/search/photos';
 
-const ThirdSection: React.FC = () => {
+const FourSection = () => {
   const [images, setImages] = useState<{ id: string; src: string; label: string }[]>([]);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const categories = ["women's fashion", "men's fashion", 'sneakers', "kids fashion", 'fashion accessories', 'wristwatches', 'wallets', 'make-up', 'Heels'];
+        const categories = ['gift cards', 'Sephora', 'Walmart', 'Nordstrom', 'iTunes', 'eBay', 'Nike Gift Card ', 'Vanilla'] ;
 
         const imageRequests = categories.map(category =>
           axios.get(API_URL, {
@@ -55,14 +54,10 @@ const ThirdSection: React.FC = () => {
   ));
 
   return (
-    <Box
-    
-    >
-      <ReusableCarousel title="Fashion Deals" items={carouselItems} />
-    </Box>
+    <div>
+      <ReusableCarousel title="Gift Cards" items={carouselItems} />
+    </div>
   );
 }
 
-
-
-export default ThirdSection
+export default FourSection;

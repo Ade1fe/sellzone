@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Box } from '@chakra-ui/react';
 import LatestUpdateCard from '../cards/LatestUpdateCard';
 import ReusableCarousel from '../carousels/ResuableCarousel';

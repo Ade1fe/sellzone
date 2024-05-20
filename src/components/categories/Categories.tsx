@@ -32,7 +32,7 @@ const Categories: React.FC = () => {
         const responses = await Promise.all(imageRequests);
         const fetchedImages = responses.map((response, index) => ({
           id: (index + 1).toString(),
-          src: response.data.results[0].urls.regular,
+          src: response.data.results[0]?.urls?.regular || 'default_image_url',
           label: categories[index]
         }));
 
@@ -58,7 +58,7 @@ const Categories: React.FC = () => {
     <Box
       bg='white'
       w='95%'
-      // py='4'
+      py='4'
       px='10px'
       left='50%'
       transform='translateX(-50%)'
@@ -68,7 +68,7 @@ const Categories: React.FC = () => {
       bottom='-80px'
       shadow='md'
     >
-      <ReusableCarousel  items={carouselItems} />
+      <ReusableCarousel items={carouselItems} />
     </Box>
   );
 }

@@ -48,8 +48,7 @@ const ReusableCarousel: React.FC<CarouselProps> = ({ title, items,marginTop }) =
             '&::-webkit-scrollbar': {
               display: 'none',
             },
-            '-ms-overflow-style': 'none', 
-            'scrollbar-width': 'none', 
+            msOverflowStyle: 'none',
           }}
         >
           {items}
