@@ -3,17 +3,17 @@ import axios from 'axios';
 import FirstSecCard from '../cards/FirstSecCard';
 import ReusableCarousel from '../carousels/ResuableCarousel';
 
-const ACCESS_KEY = '3eFu-T8CqNBo7CJcD9Ceoth7k8QVOym0H7rR4bpW8d4';
+const ACCESS_KEY = 'qP7pqke6xGMdxY8ABFlRPslGexIuzeUYsDV79ZqYwvA';
 const API_URL = 'https://api.unsplash.com/search/photos';
 
-const FiveSection = () => {
+const SevenSection = () => {
   const [images, setImages] = useState<{ id: string; src: string; label: string }[]>([]);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
         const categories = [
-          "Wines","Coffee, Tea & Cocoa","Soft Drinks","Carbonated drinks","Liquor","Juice's", 'milk', 'beer', 'cider'
+          "Kitchen Equipment","Tools & Supplies","Cleaning Supplies","Furniture","Decor","Storage and Organizational Items","For Emergencies", 'Outdoor Essentials',
         ] ;
 
         const imageRequests = categories.map(category =>
@@ -57,11 +57,9 @@ const FiveSection = () => {
 
   return (
     <div>
-      <ReusableCarousel title="Smile, Sip and Repeat" items={carouselItems} />
+      <ReusableCarousel title="Household Items" items={carouselItems} />
     </div>
   );
 }
 
-
-
-export default FiveSection
+export default SevenSection

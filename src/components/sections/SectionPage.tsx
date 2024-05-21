@@ -6,6 +6,7 @@ import ThirdSection from './ThirdSection'
 import FourSection from './FourSection'
 import FiveSection from './FiveSection'
 import SixSection from './SixSection'
+import SevenSection from './SevenSection'
 
 const SectionPage = () => {
   return (
@@ -16,6 +17,7 @@ const SectionPage = () => {
       <FourSection />
       <FiveSection />
       <SixSection />
+      <SevenSection />
     </Box>
   )
 }

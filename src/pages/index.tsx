@@ -1,4 +1,9 @@
 export {default as Landingpage} from "./landinpage/Landingpage";
+export {default as DisplayItem} from './display/DisplayItem';
+export {default as Footer} from '../components/Footer';
+export {default as ListOfItemCard} from '../components/cards/ListOfItemCard';
+export {default as ListOfItems} from './display/ListOfItems';
+export {default as SevenSection} from '../components/sections/SevenSection';
 export {default as ReusableCarousel} from '../components/carousels/ResuableCarousel';
 export {default as ThirdSection} from '../components/sections/ThirdSection';
 export {default as LatestUpdateCard} from '../components/cards/LatestUpdateCard';
@@ -15,6 +20,6 @@ export {default as Homepage} from './homepage/Homepage';
 export {default as HeroCarousel} from '../components/carousels/HeroCarousel';
 export {default as RegistrationForm}  from './auth/RegistrationForm';
 export {default as AddItemForm} from './admin/AddItemForm';
-// export {default as ReusableCarousel} from './admin/AddItemForm';
+// export {default as DisplayItem} from './admin/AddItemForm';
 
 

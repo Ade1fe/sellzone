@@ -9,13 +9,16 @@ import {
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 // 
 import { Sidebarcomp } from '../pages';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
     <Box display={['flex', ""]} py='4' justifyContent='center' gap={['3','4','5', '6','8']} alignItems='center'>
        
       <Sidebarcomp />
+      <Link to='/homepage'> 
       <Text as='span' className='logo' fontSize={['lg', 'x-large', 'xx-large']} textShadow='1px 1px green'>SellZone</Text>
+      </Link>
       <Box display={['flex', ""]} w={['50%']} justifyContent='space-between' gap='2' alignItems='center' className="">
         <Input placeholder='search products, brands and categories' />
         <Button>Search</Button>

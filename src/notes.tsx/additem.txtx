@@ -1,3 +1,4 @@
+// AddItemForm.tsx
 import React, { useState } from "react";
 import { db, storage } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -12,7 +13,6 @@ import {
   NumberInputField,
   Textarea,
 } from "@chakra-ui/react";
-import { getAuth } from "../../firebase"; 
 
 interface Item {
   name: string;
@@ -26,7 +26,6 @@ interface Item {
 }
 
 const AddItemForm: React.FC = () => {
-  const { currentUser } = getAuth(); 
   const [item, setItem] = useState<Item>({
     name: "",
     title: "",
@@ -35,7 +34,7 @@ const AddItemForm: React.FC = () => {
     image: null,
     categories: [],
     subcategories: [],
-    userId: currentUser?.uid || "", 
+    userId: "", 
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -48,22 +47,20 @@ const AddItemForm: React.FC = () => {
     setItem(prevItem => ({ ...prevItem, image: file || null }));
   };
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!item.image) {
       alert("Please upload an image.");
       return;
     }
-  
+
     try {
       const imageRef = ref(storage, `images/${item.image.name}`);
       await uploadBytes(imageRef, item.image);
       const imageUrl = await getDownloadURL(imageRef);
-  
-      // Set the userId in the item object before adding it to the Firebase collection
-      const newItem = {
+
+      await addDoc(collection(db, "items"), {
         name: item.name,
         title: item.title,
         price: item.price,
@@ -71,12 +68,9 @@ const AddItemForm: React.FC = () => {
         imageUrl,
         categories: item.categories,
         subcategories: item.subcategories,
-        userId: currentUser?.uid || '', // Set the userId here
-      };
-  
-      await addDoc(collection(db, "items"), newItem);
-  
-      // Reset the item state after adding the item
+        userId: item.userId, 
+      });
+
       setItem({
         name: "",
         title: "",
@@ -85,16 +79,15 @@ const AddItemForm: React.FC = () => {
         image: null,
         categories: [],
         subcategories: [],
-        userId: currentUser?.uid || "",
+        userId: item.userId, // Retain the userId for the next item
       });
-  
+
       alert("Item added successfully!");
     } catch (error) {
       console.error("Error adding item: ", error);
       alert("An error occurred while adding the item. Please try again.");
     }
   };
-  
 
   return (
     <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="lg">

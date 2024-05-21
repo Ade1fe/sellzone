@@ -1,0 +1,104 @@
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { collection, query, where, getDocs, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { ListOfItemCard } from '..';
+import LayoutOne from '../../layout/LayoutOne';
+import { Box, Button, Image, Text } from '@chakra-ui/react';
+import { notfound } from '../../assets';
+
+interface Item {
+  id: string;
+  imageUrl: string;
+  title: string;
+  price: number;
+  categories: string[];
+  subcategories: string[];
+}
+
+interface LocationState {
+  categories?: string;
+  subcategories?: string;
+}
+
+const ListOfItems = () => {
+  const location = useLocation();
+  const { categories, subcategories } = (location.state as LocationState) || {};
+  const [items, setItems] = useState<Item[]>([]);
+  const [noItemsAvailable, setNoItemsAvailable] = useState(false);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const itemsCollection = collection(db, 'items');
+        let q;
+
+        if (categories) {
+          const categoriesArray = categories.split(',').map((category) => category.trim());
+          q = query(itemsCollection, where('categories', 'array-contains-any', categoriesArray));
+        } else if (subcategories) {
+          const subcategoriesArray = subcategories.split(',').map((subcategory) => subcategory.trim());
+          q = query(itemsCollection, where('subcategories', 'array-contains-any', subcategoriesArray));
+        } else {
+          q = itemsCollection;
+        }
+
+        const querySnapshot = await getDocs(q);
+        const fetchedItems: Item[] = querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => ({
+          id: doc.id,
+          imageUrl: doc.data().imageUrl,
+          title: doc.data().title,
+          price: doc.data().price,
+          categories: doc.data().categories || [],
+          subcategories: doc.data().subcategories || [],
+        }));
+
+        if (fetchedItems.length === 0) {
+          setNoItemsAvailable(true);
+        } else {
+          setItems(fetchedItems);
+          setNoItemsAvailable(false);
+        }
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    };
+
+    fetchItems();
+  }, [categories, subcategories]);
+
+  return (
+    <LayoutOne>
+      <h1>Item Details</h1>
+      {noItemsAvailable ? (
+        <Box mt='2rem' textAlign='center'>
+            <Image src={notfound} w={['250px', '270px', '300px', '400px']} mx='auto' />
+          <Text className='title' fontSize={['lg', 'x-large', 'xx-large']} textAlign='center' mt='1rem'>  Out of Stock "{subcategories || categories}" </Text>
+          <Button textTransform='uppercase' mt='2rem' className='subtitle' w='200px' px='3' fontSize={['md','lg']} mx='auto' textAlign={'center'}>go to homepage</Button>
+  
+            </Box>
+      ) : (
+        items.map((item) => (
+       <>
+          <ListOfItemCard
+            key={item.id}
+            id={item.id}
+            image={item.imageUrl}
+            title={item.title}
+            price={item.price.toString()}
+            category={item.categories.join(', ')}
+            subCategory={item.subcategories.join(', ')}
+            
+          />
+          <div className="">
+            related items
+          </div>
+          
+          </>
+        ))
+      )}
+    </LayoutOne>
+  );
+};
+
+export default ListOfItems;

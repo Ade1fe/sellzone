@@ -1,5 +1,6 @@
 import { Box, Image, Text } from '@chakra-ui/react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 interface CategoryItemCardProps {
@@ -10,11 +11,18 @@ interface CategoryItemCardProps {
 
 const CategoryItemCard: React.FC<CategoryItemCardProps> = ({
   id,
-  src = 'default_image_url', // Default parameter
-  label = 'Default Label',  // Default parameter
+  src = 'default_image_url', 
+  label = 'Default Label',  
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/listofitem', { state: { id, categories: label } });
+  };
+
+
   return (
-    <Box textAlign='center' >
+    <Box textAlign='center'onClick={handleClick} cursor='pointer' >
         <Text display='none'>{id}</Text>
         <Image 
           boxSize='100px' 
@@ -29,8 +37,5 @@ const CategoryItemCard: React.FC<CategoryItemCardProps> = ({
     </Box>
   );
 }
-
-// Default props for the component
-
 
 export default CategoryItemCard;
