@@ -1,15 +1,13 @@
 
-import { useEffect } from 'react';
-import { RouterProvider } from 'react-router-dom';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { ChakraBaseProvider, ChakraProvider } from '@chakra-ui/react';
-import { auth, onAuthStateChanged } from './firebase'; 
-import router from './Router';
+
+import { useEffect,  } from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+import { auth, onAuthStateChanged } from './firebase';
+import AppRouter from './AppRouter';
 import './index.css';
 
 function App() {
   useEffect(() => {
-    // Set up the authentication listener
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log('User is logged in:', user.uid);
@@ -22,21 +20,10 @@ function App() {
   }, []);
 
   return (
-    <>
-          <ChakraProvider >
-        <RouterProvider router={router}></RouterProvider>
-      </ChakraProvider>
-    </>
+    <ChakraProvider>
+      <AppRouter />
+    </ChakraProvider>
   );
 }
 
 export default App;
-
-
-
-
-
-
-
-
-

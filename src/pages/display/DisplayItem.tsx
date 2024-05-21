@@ -1,20 +1,14 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+
+import LayoutOne from '../../layout/LayoutOne';
+import DisplayComp from './DisplayComp';
 
 
-
-interface LocationState {
-   id?: string;
-  }
-
-const DisplayItem: React.FC<LocationState> = () => {
-    const location = useLocation();
-    const {id} = (location.state as LocationState) || {};
+const DisplayItem= () => {
+  
   return (
-    <div>
-      <h2>Document ID: {id}</h2>
-      {/* Add more content to display details based on the ID */}
-    </div>
+    <LayoutOne>
+     <DisplayComp />
+    </LayoutOne>
   );
 };
 

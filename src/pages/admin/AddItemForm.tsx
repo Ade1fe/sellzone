@@ -71,7 +71,7 @@ const AddItemForm: React.FC = () => {
         imageUrl,
         categories: item.categories,
         subcategories: item.subcategories,
-        userId: currentUser?.uid || '', // Set the userId here
+        userId: currentUser?.uid || '', 
       };
   
       await addDoc(collection(db, "items"), newItem);
