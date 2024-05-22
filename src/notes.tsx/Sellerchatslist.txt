@@ -1,15 +1,15 @@
 
-
 import React, { useEffect, useState } from 'react';
-import { Box, Text, Button, IconButton } from '@chakra-ui/react';
-import { collection, query, where, onSnapshot, getDoc, doc, deleteDoc } from 'firebase/firestore';
+import { Box, Text, Button } from '@chakra-ui/react';
+import { collection, query, where, onSnapshot, getDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import SellerChatComponent from './SellerChatComponent';
-import { BiTrash } from 'react-icons/bi';
 
+// Define the type for a chat document
 interface Chat {
   id: string;
   participants: string[];
+  // Add other properties of your chat documents if there are any
 }
 
 interface UserNames {
@@ -66,20 +66,8 @@ const SellerChatsList: React.FC<{ sellerId: string }> = ({ sellerId }) => {
     return () => unsubscribe();
   }, [sellerId, userNames]);
 
-  const handleDeleteChat = async (chatId: string) => {
-    try {
-      await deleteDoc(doc(db, 'chats', chatId));
-      setChats((prevChats) => prevChats.filter((chat) => chat.id !== chatId));
-      if (selectedChatId === chatId) {
-        setSelectedChatId(null);
-      }
-    } catch (error) {
-      console.error('Error deleting chat:', error);
-    }
-  };
-
   return (
-    <Box display="flex" maxHeight='400px'>
+    <Box display="flex"  maxHeight='400px'> 
       <Box w="30%" p={4} borderWidth="1px" borderRadius="lg" overflow="hidden">
         <Text fontSize="xl" fontWeight="bold" mb={4}>Chats</Text>
         {chats.map((chat) => {
@@ -87,15 +75,10 @@ const SellerChatsList: React.FC<{ sellerId: string }> = ({ sellerId }) => {
           const otherParticipantName = otherParticipantId ? userNames[otherParticipantId] : 'Loading...';
 
           return (
-            <Box key={chat.id} mb={2} display="flex" justifyContent="space-between" alignItems="center">
-              <Button w="80%" onClick={() => setSelectedChatId(chat.id)}>
+            <Box key={chat.id} mb={2}>
+              <Button w="100%" onClick={() => setSelectedChatId(chat.id)}>
                 Chat with {otherParticipantName}
               </Button>
-              <IconButton
-                aria-label="Delete chat"
-                icon={<BiTrash />}
-                onClick={() => handleDeleteChat(chat.id)}
-              />
             </Box>
           );
         })}

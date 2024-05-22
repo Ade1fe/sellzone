@@ -1,11 +1,13 @@
 
-
 import React, { useEffect, useState } from 'react';
-import { Box, Text, Spinner, Button, Input, VStack, Image } from '@chakra-ui/react';
+import { Box, Text, Spinner, Button, Input, VStack, Image, Icon } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, addDoc, onSnapshot, query, orderBy, updateDoc, where, getDocs } from 'firebase/firestore';
 import { auth, db, onAuthStateChanged } from '../../firebase';
-import { bagImg } from '../../assets';
+import { bagImg, blobimg } from '../../assets';
+import { FaLocationArrow, FaWhatsapp } from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
+import { SafetyFirstComp } from '..';
 
 interface LocationState {
   id?: string;
@@ -65,34 +67,51 @@ const DisplayComp: React.FC = () => {
     fetchData();
   }, [id]);
 
-  useEffect(() => {
-    const handleChat = async () => {
+  const handleStartChat = async () => {
+    try {
       if (currentUserId && data && data.sellerInfo) {
-        try {
-          const chatQuery = query(collection(db, 'chats'), where('participants', 'array-contains', currentUserId));
-          const existingChatSnap = await getDocs(chatQuery);
-          const existingChat = existingChatSnap.docs.find((doc) => doc.data().participants.includes(data.sellerInfo.uid));
-          if (existingChat) {
-            setChatId(existingChat.id);
-          } else {
-            const newChatRef = await addDoc(collection(db, 'chats'), {
-              participants: [currentUserId, data.sellerInfo.uid],
-              lastMessage: '',
-              lastMessageTimestamp: new Date(),
-            });
-            setChatId(newChatRef.id);
-          }
-        } catch (error) {
-          console.error('Error creating or finding chat:', error);
-          setErrorMessage('An error occurred. Please try again later.');
+        const chatQuery = query(collection(db, 'chats'), where('participants', 'array-contains', currentUserId));
+        const existingChatSnap = await getDocs(chatQuery);
+        const existingChat = existingChatSnap.docs.find((doc) => {
+          const chatData = doc.data();
+          return chatData.participants.includes(data.sellerInfo.uid) && chatData.itemId === id;
+        });
+
+        let chatDocId: string;
+        if (existingChat) {
+          chatDocId = existingChat.id;
+          setChatId(existingChat.id);
+        } else {
+          const newChatRef = await addDoc(collection(db, 'chats'), {
+            participants: [currentUserId, data.sellerInfo.uid],
+            itemId: id,
+            itemTitle: data.title,
+            itemImageUrl: data.imageUrl,
+            lastMessage: '',
+            lastMessageTimestamp: new Date(),
+          });
+          chatDocId = newChatRef.id;
+          setChatId(newChatRef.id);
+        }
+
+        // Check if the document ID message has already been sent
+        const messageQuery = query(collection(db, 'chats', chatDocId, 'messages'), where('message', '==', `Document ID: ${id}`));
+        const messageSnap = await getDocs(messageQuery);
+        if (messageSnap.empty) {
+          // Send the document ID as the first message
+          const messageRef = collection(db, 'chats', chatDocId, 'messages');
+          await addDoc(messageRef, {
+            senderId: currentUserId,
+            message: `Document ID: ${id}`,
+            timestamp: new Date(),
+          });
         }
       }
-    };
-
-    if (data && data.sellerInfo) {
-      handleChat();
+    } catch (error) {
+      console.error('Error starting chat:', error);
+      setErrorMessage('An error occurred while starting the chat.');
     }
-  }, [currentUserId, data]);
+  };
 
   useEffect(() => {
     if (chatId) {
@@ -116,7 +135,7 @@ const DisplayComp: React.FC = () => {
   }, [chatId]);
 
   const handleSendMessage = async () => {
-    if (message.trim() === '' || !chatId) return;
+    if (message.trim() === '' || !currentUserId || !chatId) return;
 
     try {
       const messagesRef = collection(db, 'chats', chatId, 'messages');
@@ -124,7 +143,6 @@ const DisplayComp: React.FC = () => {
         senderId: currentUserId,
         message: message.trim(),
         timestamp: new Date(),
-       
       });
 
       // Update the last message and timestamp in the chat document
@@ -160,30 +178,36 @@ const DisplayComp: React.FC = () => {
   }
 
   return (
-    <Box p={5}>
-      <h2>Document ID: {id}</h2>
-      <Box boxSize="60%" mb={4}>
+    <Box p={5} display={['flex']} className='texts'  gap={['30px']} justifyContent='space-evenly' alignItems='start'>
+    <Box className="" w={['60%']}>
+    <Text display='none'>Document ID: {id}</Text>
+      <Box w='full' mb={4}>
         <Image src={data.imageUrl || bagImg} w="full" h="full" objectFit="cover" bg="red" />
       </Box>
       <Box>
-        <Text fontSize="lg" fontWeight="bold">{data.title || 'Smart Wristwatch For iPhones And Android Phone'}</Text>
+        <Text fontSize={['md', "lg"]} fontWeight="600" className='subtitle'>{data.title || 'Smart Wristwatch For iPhones And Android Phone'}</Text>
         <Text fontSize="sm" color="gray.500">{data.postedDate || 'Posted 13 04 2024 12:3am'}</Text>
-        <Text mt={2}>Description: {data.description || 'This is a placeholder description for the product.'}</Text>
-        <Text mt={2}>Price: {data.price || '$99.99'}</Text>
-        <Text mt={2}>Price: {data.userId || 'userId'}</Text>
+        <Text fontSize={['md', "lg"]}>Description: {data.description || 'This is a placeholder description for the product.'}</Text>
+        <Text fontSize={['md', "lg"]}>Price: # {data.price || '$99.99'}</Text>
+        <Text fontSize={['md', "lg"]} display='none'>Seller ID: {data.userId || 'userId'}</Text>
       </Box>
-      <Box mt={4} p={3} shadow="md" borderWidth="1px" borderRadius="md">
+    </Box>
+   <Box mt={4} p={3}  w={['30%']} className="" shadow='md'>
+   <Box >
         <Text fontSize="lg" fontWeight="bold">Seller's Information</Text>
         {data.sellerInfo ? (
-          <>
-            <Text mt={2}>Name: {data.sellerInfo.name || 'John Doe'}</Text>
-            <Text>Email: {data.sellerInfo.email || 'john.doe@example.com'}</Text>
-            <Text>Business Name: {data.sellerInfo.businessName || 'No Business Name'}</Text>
-            <Text>Business Type: {data.sellerInfo.businessType || 'No Business Type'}</Text>
-            <Button mt={4} onClick={() => console.log('Chat logic already handled')}>
+          <Box   px='4' py='5'  display='flex' flexDir='column' zIndex='2' gap='3' pos='relative'>
+            <Image src={blobimg} pos='absolute' top='0' right='0' zIndex='0' w='100px' h='100%' />
+            <Text zIndex='3' fontSize={["lg", 'x-large']} fontWeight="600" mt={2} className='subtitle'> <Text as='span' fontSize='sm' color='gray.400'> posted by</Text> {data.sellerInfo.name || 'John Doe'}</Text>
+            <Text zIndex='3' fontSize={["md", 'lg']}> {data.sellerInfo.businessName || 'No Business Name'}</Text>
+            <Text zIndex='3' display='none'>Business Type: {data.sellerInfo.businessType || 'No Business Type'}</Text>
+            <Text zIndex='3' display='flex' alignItems='center' gap='2' fontSize={["md", 'lg']}><Icon as={MdEmail} /> {data.sellerInfo.email || 'john.doe@example.com'}</Text>
+            <Text zIndex='3' display='flex' alignItems='center' gap='2' fontSize={["md", 'lg']}> <Icon as={FaWhatsapp} /> {data.sellerInfo.phoneNumber || 'No PhoneNumber'}</Text>
+            <Text zIndex='3' display='flex' alignItems='center' gap='2' fontSize={["md", 'lg']}> <Icon as={FaLocationArrow} /> {data.sellerInfo.houseAddress || 'No House Address'}</Text>
+            <Button bg='green.800' _hover={{bg: "green.600"}} cursor='pointer' color='whitesmoke' fontSize={['md', 'lg']} zIndex='3' mt={4} onClick={handleStartChat}>
               {chatId ? 'Chat Started' : 'Start Chat'}
             </Button>
-          </>
+          </Box>
         ) : (
           <Text>No seller information available</Text>
         )}
@@ -191,15 +215,14 @@ const DisplayComp: React.FC = () => {
       {chatId && (
         <Box>
           <VStack spacing={4} align="stretch">
-          {messages.map((msg, index) => (
-  <Box key={index} p={3} bg={msg.senderId === currentUserId ? 'gray.200' : 'blue.200'} borderRadius="md">
-    <Text>{msg.text || msg.message}</Text>
-    <Text fontSize="xs" color="gray.500">
-      Sent by {msg.senderId === currentUserId ? "You" : (msg.senderId === data.sellerInfo.uid ? data.sellerInfo.name : "Unknown")}
-    </Text>
-  </Box>
-))}
-
+            {messages.map((msg, index) => (
+              <Box key={index} p={3} bg={msg.senderId === currentUserId ? 'gray.200' : 'blue.200'} borderRadius="md">
+                <Text>{msg.text || msg.message}</Text>
+                <Text fontSize="xs" color="gray.500">
+                  Sent by {msg.senderId === currentUserId ? "You" : (msg.senderId === data.sellerInfo.uid ? data.sellerInfo.name : "Unknown")}
+                </Text>
+              </Box>
+            ))}
           </VStack>
           <Box mt={4} display="flex">
             <Input
@@ -208,14 +231,34 @@ const DisplayComp: React.FC = () => {
               placeholder="Type your message..."
               disabled={!currentUserId}
             />
-            <Button ml={2} onClick={handleSendMessage} disabled={!currentUserId}>
+            <Button bg='green.800' _hover={{bg: "green.600"}} cursor='pointer' ml={2} onClick={handleSendMessage} disabled={!currentUserId}>
               Send
             </Button>
           </Box>
         </Box>
       )}
+         <SafetyFirstComp />
+   </Box>
+
     </Box>
   );
 };
 
-export default DisplayComp;
+export default DisplayComp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

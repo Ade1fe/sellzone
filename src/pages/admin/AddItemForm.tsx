@@ -1,6 +1,7 @@
+
 import React, { useState } from "react";
 import { db, storage } from "../../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   Box,
@@ -11,32 +12,32 @@ import {
   NumberInput,
   NumberInputField,
   Textarea,
+  Spinner, // Import Spinner component from Chakra UI
 } from "@chakra-ui/react";
-import { getAuth } from "../../firebase"; 
+import { getAuth } from "../../firebase";
 
 interface Item {
-  name: string;
   title: string;
   price: number;
   description: string;
   image: File | null;
   categories: string[];
   subcategories: string[];
-  userId: string; 
+  userId: string;
 }
 
 const AddItemForm: React.FC = () => {
-  const { currentUser } = getAuth(); 
+  const { currentUser } = getAuth();
   const [item, setItem] = useState<Item>({
-    name: "",
     title: "",
     price: 0,
     description: "",
     image: null,
     categories: [],
     subcategories: [],
-    userId: currentUser?.uid || "", 
+    userId: currentUser?.uid || "",
   });
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -48,37 +49,37 @@ const AddItemForm: React.FC = () => {
     setItem(prevItem => ({ ...prevItem, image: file || null }));
   };
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!item.image) {
       alert("Please upload an image.");
       return;
     }
-  
+
+    setLoading(true); // Set loading to true before starting the upload
+
     try {
       const imageRef = ref(storage, `images/${item.image.name}`);
       await uploadBytes(imageRef, item.image);
       const imageUrl = await getDownloadURL(imageRef);
-  
+
       // Set the userId in the item object before adding it to the Firebase collection
       const newItem = {
-        name: item.name,
         title: item.title,
         price: item.price,
         description: item.description,
         imageUrl,
         categories: item.categories,
         subcategories: item.subcategories,
-        userId: currentUser?.uid || '', 
+        userId: currentUser?.uid || '',
+        timestamp: serverTimestamp(),
       };
-  
+
       await addDoc(collection(db, "items"), newItem);
-  
+
       // Reset the item state after adding the item
       setItem({
-        name: "",
         title: "",
         price: 0,
         description: "",
@@ -87,22 +88,19 @@ const AddItemForm: React.FC = () => {
         subcategories: [],
         userId: currentUser?.uid || "",
       });
-  
+
       alert("Item added successfully!");
     } catch (error) {
       console.error("Error adding item: ", error);
       alert("An error occurred while adding the item. Please try again.");
+    } finally {
+      setLoading(false); // Set loading to false after the upload is done
     }
   };
-  
 
   return (
-    <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="lg">
+    <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="lg" className='texts'>
       <form onSubmit={handleSubmit}>
-        <FormControl id="name" mb={4} isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input type="text" name="name" value={item.name} onChange={handleChange} />
-        </FormControl>
         <FormControl id="title" mb={4} isRequired>
           <FormLabel>Title</FormLabel>
           <Input type="text" name="title" value={item.title} onChange={handleChange} />
@@ -131,8 +129,8 @@ const AddItemForm: React.FC = () => {
         </FormControl>
         {/* This input can be hidden if the userId is obtained from the authentication state */}
         <Input type="hidden" name="userId" value={item.userId} />
-        <Button type="submit" colorScheme="blue" width="full">
-          Add Item
+        <Button type="submit" colorScheme="blue" width="full" disabled={loading}>
+          {loading ? <Spinner /> : "Add Item"}
         </Button>
       </form>
     </Box>

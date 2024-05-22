@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { collection, query, where, getDocs, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { ListOfItemCard } from '..';
 import LayoutOne from '../../layout/LayoutOne';
-import { Box, Button, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Image, Text, CircularProgress } from '@chakra-ui/react'; // Assuming CircularProgress is available from Chakra UI
 import { notfound } from '../../assets';
 
 interface Item {
@@ -28,6 +28,7 @@ const ListOfItems = () => {
   const { categories, subcategories } = (location.state as LocationState) || {};
   const [items, setItems] = useState<Item[]>([]);
   const [noItemsAvailable, setNoItemsAvailable] = useState(false);
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -85,7 +86,7 @@ const ListOfItems = () => {
               categories: itemData.categories || [],
               subcategories: itemData.subcategories || [],
               userId: itemData.userId,
-              sellerName: '', // Empty sellerName
+              sellerName: '',
             };
           })
         );
@@ -96,8 +97,10 @@ const ListOfItems = () => {
           setItems(fetchedItems);
           setNoItemsAvailable(false);
         }
+        setLoading(false); // Set loading to false after fetching items
       } catch (error) {
         console.error('Error fetching items:', error);
+        setLoading(false); // Set loading to false in case of an error
       }
     };
 
@@ -106,38 +109,45 @@ const ListOfItems = () => {
 
   return (
     <LayoutOne>
-    <h1>Item Details</h1>
-    {noItemsAvailable ? (
-      <Box mt='2rem' textAlign='center'>
-        <Image src={notfound} w={['250px', '270px', '300px', '400px']} mx='auto' />
-        <Text className='title' fontSize={['lg', 'x-large', 'xx-large']} textAlign='center' mt='1rem'>Out of Stock "{subcategories || categories}"</Text>
-        <Button textTransform='uppercase' mt='2rem' className='subtitle' w='200px' px='3' fontSize={['md', 'lg']} mx='auto' textAlign={'center'}>go to homepage</Button>
-      </Box>
-    ) : (
-      <>
-      <Box style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {items.map((item) => (
-          <div key={item.id} >
-            <ListOfItemCard
-              id={item.id}
-              image={item.imageUrl}
-              title={item.title}
-              price={item.price.toString()}
-              category={item.categories.join(', ')}
-              subCategory={item.subcategories.join(', ')}
-              sellersID={item.userId}
-            />
-          
-          </div>
-        ))}
-      </Box>
-      <div className="section" style={{ marginTop: '10px' }}>
-              related items
-            </div>
-      </>
-    )}
-  </LayoutOne>
-  
+      <Box display='none'>Item Details</Box>
+      {loading ? ( // Check loading state
+        <Box mt='2rem' textAlign='center'>
+          <CircularProgress isIndeterminate color="green.300" /> {/* Show a loading indicator */}
+          <Text className='title' fontSize={['lg', 'x-large', 'xx-large']} textAlign='center' mt='1rem'>Loading...</Text>
+        </Box>
+      ) : (
+        <>
+          {noItemsAvailable ? (
+            <Box mt='2rem' textAlign='center'>
+              <Image src={notfound} w={['250px', '270px', '300px', '400px']} mx='auto' />
+              <Text className='title' fontSize={['lg', 'x-large', 'xx-large']} textAlign='center' mt='1rem'>Out of Stock "{subcategories || categories}"</Text>
+              <Link to="/homepage">  <Button bg='green.800' _hover={{bg: "green.600"}} cursor='pointer' color='whitesmoke' textTransform='uppercase' mt='2rem' className='subtitle' w='200px' px='3' fontSize={['md', 'lg']} mx='auto' textAlign={'center'}>go to homepage</Button></Link>
+            </Box>
+          ) : (
+            <>
+              <Box style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {items.map((item) => (
+                  <div key={item.id} >
+                    <ListOfItemCard
+                      id={item.id}
+                      image={item.imageUrl}
+                      title={item.title}
+                      price={item.price.toString()}
+                      category={item.categories.join(', ')}
+                      subCategory={item.subcategories.join(', ')}
+                      sellersID={item.userId}
+                    />
+                  </div>
+                ))}
+              </Box>
+              <Box mt='10rem' className="section" >
+                <Text fontSize={['lg', 'x-large']} textAlign='center' textTransform='capitalize' className='subtitle' fontWeight='800'>   related items </Text>
+              </Box>
+            </>
+          )}
+        </>
+      )}
+    </LayoutOne>
   );
 };
 

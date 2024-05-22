@@ -1,24 +1,58 @@
-
+import { useState, useEffect } from 'react';
 import { Box } from '@chakra-ui/react';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
 import LatestUpdateCard from '../cards/LatestUpdateCard';
 import ReusableCarousel from '../carousels/ResuableCarousel';
 
+interface Item {
+  id: string;
+  imageUrl: string;
+  title: string;
+  price: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  timestamp: any; // Replace with appropriate type for your timestamp
+}
+
 const SecondSection = () => {
-  const items = [
-    <LatestUpdateCard key="xbox1" id="xbox1" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox2" price="$499" />,
-    <LatestUpdateCard key="xbox2" id="xbox2" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox" price="$499" />,
-    <LatestUpdateCard key="xbox3" id="xbox3" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox" price="$499" />,
-    <LatestUpdateCard key="xbox4" id="xbox4" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox" price="$499" />,
-    <LatestUpdateCard key="xbox5" id="xbox5" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox" price="$499" />,
-    <LatestUpdateCard key="xbox6" id="xbox6" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox" price="$499" />,
-    <LatestUpdateCard key="xbox7" id="xbox7" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox" price="$499" />,
-    <LatestUpdateCard key="xbox8" id="xbox8" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox" price="$499" />,
-    <LatestUpdateCard key="xbox9" id="xbox9" image="https://images-na.ssl-images-amazon.com/images/G/01/US-hq/2023/img/Consumer_Electronics/XCM_CUTTLE_1546843_2940864_379x304_1X_en_US._SY304_CB613273467_.jpg" title="Xbox" price="$499" />,
-  ];
+  const [items, setItems] = useState<Item[]>([]);
+
+  useEffect(() => {
+    const fetchLatestItems = async () => {
+      try {
+        const itemsCollection = collection(db, 'items');
+        const q = query(itemsCollection, orderBy('timestamp', 'desc'), limit(7));
+        const querySnapshot = await getDocs(q);
+        const latestItems: Item[] = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          imageUrl: doc.data().imageUrl,
+          title: doc.data().title,
+          price: doc.data().price,
+          timestamp: doc.data().timestamp,
+        }));
+        setItems(latestItems);
+      } catch (error) {
+        console.error('Error fetching latest items: ', error);
+      }
+    };
+
+    fetchLatestItems();
+  }, []);
 
   return (
     <Box>
-      <ReusableCarousel title="Latest Updates" items={items} />
+      <ReusableCarousel
+        title="Latest Updates"
+        items={items.map(item => (
+          <LatestUpdateCard
+            key={item.id}
+            id={item.id}
+            image={item.imageUrl}
+            title={item.title}
+            price={item.price.toString()}
+          />
+        ))}
+      />
     </Box>
   );
 };

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Footer, Navbar } from '../pages';
+import { Box } from '@chakra-ui/react';
 
 interface LayoutOneProps {
   children: ReactNode;
@@ -7,11 +8,11 @@ interface LayoutOneProps {
 
 const LayoutOne: React.FC<LayoutOneProps> = ({ children }) => {
   return (
-    <div>
+    <Box >
       <Navbar />
       <div className="content">{children}</div>
       <Footer />
-    </div>
+    </Box>
   );
 };
 
