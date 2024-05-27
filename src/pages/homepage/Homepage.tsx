@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import { Categories, HeroComp, Navbar, SectionPage } from '..'
+import { Categories, Footer, HeroComp, Navbar, SectionPage } from '..'
 
 const Homepage = () => {
   return (
@@ -10,6 +10,7 @@ const Homepage = () => {
     <Categories />
     </Box>
       <SectionPage />
+      <Footer  />
     </Box>
   )
 }

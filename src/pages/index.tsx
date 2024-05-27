@@ -1,4 +1,5 @@
 export {default as Landingpage} from "./landinpage/Landingpage";
+export {default as ProfilePage} from './profile-page/ProfilePage';
 export {default as BookMarked} from './bookmarked/BookMarked';
 // export {default as BookmarkContext} from './bookmarked/BookmarkContext';
 export {default as SafetyFirstComp} from '../components/SafetyFirstComp';
@@ -23,6 +24,6 @@ export {default as Homepage} from './homepage/Homepage';
 export {default as HeroCarousel} from '../components/carousels/HeroCarousel';
 export {default as RegistrationForm}  from './auth/RegistrationForm';
 export {default as AddItemForm} from './admin/AddItemForm';
-// export {default as BookMarked} from './admin/AddItemForm';
+// export {default as ProfilePage} from './admin/AddItemForm';
 
 

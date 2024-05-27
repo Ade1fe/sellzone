@@ -4,7 +4,7 @@ import { collection, query, where,  deleteDoc, doc ,updateDoc, onSnapshot} from 
 import { db } from '../../firebase'; // Adjust the import path as necessary
 import SellerChatsList from './SellerChatsList';
 import { BiEdit, BiPlus } from 'react-icons/bi';
-import { AddItemForm } from '..';
+import { AddItemForm, Footer } from '..';
 import { Link } from 'react-router-dom';
 
 
@@ -143,13 +143,13 @@ const SellerDashboard: React.FC<{ sellerId: string }> = ({ sellerId }) => {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-      <Box mt={6}>
+      <Box mt={6} mx='auto' maxWidth='1500px'>
         <SellerChatsList sellerId={sellerId} />
-        <TableContainer mt='8rem'>
+        <TableContainer mt='8rem' px='15px' overflowY='auto' maxHeight="calc(100vh - 200px)">
           <Text fontSize={['lg', 'x-large', 'xx-large']} mb='2rem' textAlign='center' className='subtitle'>
             Products by seller
           </Text>
-          <Table variant='simple'>
+          <Table variant='striped' colorScheme='green'>
             <TableCaption>Items by seller</TableCaption>
             <Thead>
               <Tr>
@@ -177,6 +177,7 @@ const SellerDashboard: React.FC<{ sellerId: string }> = ({ sellerId }) => {
                       {editingItemId === item.id ? (
                         <Input
                           value={editForm.title || ''}
+                          bg='white' shadow='md'
                           onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
                         />
                       ) : (
@@ -188,6 +189,7 @@ const SellerDashboard: React.FC<{ sellerId: string }> = ({ sellerId }) => {
                         <Input
                           type="number"
                           value={editForm.price || ''}
+                          bg='white' shadow='md'
                           onChange={(e) => setEditForm({ ...editForm, price: Number(e.target.value) })}
                         />
                       ) : (
@@ -198,6 +200,7 @@ const SellerDashboard: React.FC<{ sellerId: string }> = ({ sellerId }) => {
                       {editingItemId === item.id ? (
                         <Input
                           value={editForm.description || ''}
+                          bg='white' shadow='md'
                           onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                         />
                       ) : (
@@ -233,6 +236,7 @@ const SellerDashboard: React.FC<{ sellerId: string }> = ({ sellerId }) => {
           </Table>
         </TableContainer>
       </Box>
+      <Footer />
     </Box>
   );
 };

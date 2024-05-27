@@ -3,7 +3,7 @@ import { HeroCarousel } from '../pages'
 
 const HeroComp = () => {
   return (
-    <Box>
+    <Box pt={['3rem','6rem', '8rem']}>
        <HeroCarousel /> 
     </Box>
   )

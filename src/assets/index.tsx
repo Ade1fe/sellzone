@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 export {default as pantsImg1} from './images/assortment-beige-tone-colored-pants.jpg'
 export {default as bagImg} from './images/bag-hanging-from-furniture-item-indoors.jpg'
 export {default as bedromImg} from './images/bedroom-background-zoom-calls.jpg'
@@ -23,5 +24,5 @@ export {default as headset} from './images/headsets.jpeg'
 export {default as controller} from './images/controllers.png'
 export {default as notfound} from './images/Product hunt-cuate.svg'
 export {default as blobimg} from './images/blob.png'
-// export {default as pantsImg1} from './images/assortment-beige-tone-colored-pants.jpg'
+export {default as bioImg} from './images/OLO2DM0.jpg'
 // export {default as pantsImg1} from './images/assortment-beige-tone-colored-pants.jpg'

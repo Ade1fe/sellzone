@@ -1,144 +1,32 @@
 
-
-// import React, { useState, useEffect } from 'react';
-// import { Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Icon, useDisclosure } from '@chakra-ui/react';
-// import { RiMenuLine } from 'react-icons/ri';
-// import { db } from '../../firebase'; // Adjust the path as necessary
-// import { collection, getDocs } from 'firebase/firestore';
-// import { useNavigate } from 'react-router-dom';
-// interface CardProps {
-//   id?: string;
-//   image?: string;
-//   label?: string;
-// }
-
-// const Sidebarcomp: React.FC<CardProps> = ({ id,  label }) => {
-//   const { isOpen, onOpen, onClose } = useDisclosure();
-//   const [categories, setCategories] = useState<string[]>([]);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const fetchCategories = async () => {
-//       const querySnapshot = await getDocs(collection(db, 'items'));
-//       const categorySet = new Set<string>();
-
-//       querySnapshot.forEach(doc => {
-//         const data = doc.data();
-
-//         if (data.categories && Array.isArray(data.categories)) {
-//           data.categories.forEach((category: string) => categorySet.add(category.toLowerCase()));
-//         } else {
-//           categorySet.add('uncategorized');
-//         }
-
-//         if (data.subcategories && Array.isArray(data.subcategories)) {
-//           data.subcategories.forEach((subCategory: string) => categorySet.add(subCategory.toLowerCase()));
-//         } else {
-//           categorySet.add('uncategorized');
-//         }
-//       });
-
-//       setCategories(Array.from(categorySet));
-//     };
-
-//     fetchCategories();
-//   }, []);
-
-//   const handleCategoryClick = () => {
-//     navigate('/listofitem', { state: { id, categories: label } });
-//   };
-
-//   return (
-//     <>
-//       <Button bg='transparent' onClick={onOpen}>
-//         <Icon as={RiMenuLine} boxSize={[6, 7, 8]} />
-//       </Button>
-//       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-//         <DrawerOverlay />
-//         <DrawerContent>
-//           <DrawerHeader borderBottomWidth='1px'>Categories</DrawerHeader>
-//           <DrawerBody>
-//             <div>
-//               <strong>Categories and Subcategories</strong>
-//               <ul>
-//                 {categories.map((category, index) => (
-//                   <li key={index} onClick={() => handleCategoryClick()} style={{ cursor: 'pointer', textTransform: 'capitalize' }}>
-//                     {category}
-//                   </li>
-//                 ))}
-//               </ul>
-//             </div>
-//           </DrawerBody>
-//         </DrawerContent>
-//       </Drawer>
-//     </>
-//   );
-// };
-
-// export default Sidebarcomp;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from 'react';
-import { Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Icon, useDisclosure } from '@chakra-ui/react';
-import { RiMenuLine } from 'react-icons/ri';
+import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Icon, List, ListItem, useDisclosure } from '@chakra-ui/react';
+import { RiMenuLine, RiArrowRightSLine } from 'react-icons/ri'; // Importing icons
 import { db } from '../../firebase'; // Adjust the path as necessary
 import { collection, getDocs, query, limit, startAfter, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import NavbarSearch from '../NavbarSearch';
+import { GiBookmarklet } from 'react-icons/gi';
 
-const Sidebarcomp = () => {
+interface CategoryItemCardProps {
+  id: string;
+  label: string;
+}
+
+const Sidebarcomp: React.FC<CategoryItemCardProps> = ({
+  id,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [categories, setCategories] = useState<string[]>([]);
   const navigate = useNavigate();
   const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const fetchCategories = async () => {
     setLoading(true);
     const itemsCollection = collection(db, 'items');
-    let q = query(itemsCollection, limit(10)); // Limit to 10 documents per fetch
+    let q = query(itemsCollection, limit(10)); 
 
     if (lastVisible) {
       q = query(itemsCollection, startAfter(lastVisible), limit(10));
@@ -178,31 +66,44 @@ const Sidebarcomp = () => {
   }, []);
 
   const handleCategoryClick = (category: string) => {
-    navigate('/listofitems', { state: { category } });
+    console.log("category:", category);
+    navigate('/listofitem', { state: { id, categories: category } });
   };
 
   return (
     <>
-      <Button bg='transparent' onClick={onOpen}>
-        <Icon as={RiMenuLine} boxSize={[6, 7, 8]} />
+      <Button bg='transparent' onClick={onOpen} p='0' mr='3'>
+        <Icon as={RiMenuLine} boxSize={[8,9,10]} />
       </Button>
-      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen} size='lg'>
+
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader borderBottomWidth='1px'>Categories</DrawerHeader>
+          <DrawerCloseButton />
           <DrawerBody>
-            <div>
-              <strong>Categories and Subcategories</strong>
-              <ul>
+            <Box>
+              <List spacing={3}>
                 {categories.map((category, index) => (
-                  <li key={index} onClick={() => handleCategoryClick(category)} style={{ cursor: 'pointer', textTransform: 'capitalize' }}>
-                    {category}
-                  </li>
+                  <ListItem key={index} onClick={() => handleCategoryClick(category)} style={{ cursor: 'pointer', textTransform: 'capitalize' }}>
+                    <Icon as={RiArrowRightSLine} mr={2} /> {category}
+                  </ListItem>
                 ))}
-              </ul>
-              {loading && <p>Loading more...</p>}
-              {!loading && <Button onClick={fetchCategories}>Load More</Button>}
-            </div>
+              </List>
+            </Box>
+
+
+         
+        <Box w='full' mt='2rem' display={['block', 'block', 'none']}  bg='white'>
+          <Box w={['100%']} className="">
+            <NavbarSearch />
+          </Box>
+          <Box className="" mt='8'>
+            <Link to='/bookmarked' className=""> <Icon as={GiBookmarklet} boxSize={[6,7,8]}  /> </Link>
+          </Box>
+        </Box>
+    
+            
           </DrawerBody>
         </DrawerContent>
       </Drawer>

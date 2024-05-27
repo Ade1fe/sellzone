@@ -1,17 +1,17 @@
-
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Icon, Input, Text, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
+import { Box, Button, Icon, Text, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import { IoIosArrowDown } from "react-icons/io";
-import { HiOutlineShoppingCart } from "react-icons/hi";
 import { getAuth, signOut, User } from 'firebase/auth';
-import { getDoc, doc, getFirestore } from 'firebase/firestore'; // Import Firestore functions
+import { getDoc, doc, getFirestore } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
+import NavbarSearch from './NavbarSearch';
+import { GiBookmarklet } from 'react-icons/gi';
 import { Sidebarcomp } from '../pages';
 
 const Navbar: React.FC = () => {
   const auth = getAuth();
-  const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [, setUser] = useState<User | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
 
   useEffect(() => {
@@ -23,11 +23,10 @@ const Navbar: React.FC = () => {
           if (docSnap.exists()) {
             setUser(auth.currentUser);
             const userData = docSnap.data();
-            setUserType(userData.userType); // Set userType from user data
+            setUserType(userData.userType);
           }
         }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error:any) {
+      } catch (error:any) {
         setError(error.message);
         console.error('Error fetching user data:', error.message);
       }
@@ -40,7 +39,6 @@ const Navbar: React.FC = () => {
     try {
       await signOut(auth);
       console.log('User logged out successfully');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error:any) {
       setError(error.message);
       console.error('Error logging out:', error.message);
@@ -48,38 +46,47 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Box display={['flex', ""]} py='4' justifyContent='center' gap={['3','4','5', '6','8']} alignItems='center'>
-      <Sidebarcomp />
-      <Link to='/homepage'> 
-        <Text as='span' className='logo' fontSize={['lg', 'x-large', 'xx-large']} textShadow='1px 1px green'>SellZone</Text>
-      </Link>
-      <Box display={['flex', ""]} w={['50%']} justifyContent='space-between' gap='2' alignItems='center' className="">
-        <Input placeholder='search products, brands and categories' />
-        <Button bg='green.600' _hover={{bg: "green.800"}} cursor='pointer' color='white'>Search</Button>
+    <Box pt='6' px='15px' pb={['3','5', '10']} className='texts' pos='fixed' top='0' bg='white' w='full' zIndex='999' justifyContent='center' gap={['3','4','5', '6','8']} alignItems='center' display={['flex']}>
+      <Box> 
+        <Sidebarcomp id={''} label={''} /> 
       </Box>
-      
-      <div className="">
+      <Link to='/homepage'> 
+        <Text w={['']} as='span' className='logo' fontSize={[ 'x-large', 'xx-large', '31px']} textShadow='1px 1px green'>SellZone</Text>
+      </Link>
+     
+      <Box w={['50%']}  display={['none','none', 'block']}>
+        <NavbarSearch />
+      </Box>
+      <Box className="" display={['']} ml={['1rem', '8rem', '0',  '0','0']}>
         <Menu>
-          <MenuButton bg='green.600' _hover={{bg: "green.800"}} cursor='pointer' color='white' as={Button} rightIcon={<IoIosArrowDown />}>
+          <MenuButton bg='transparent' _hover={{bg: "transparent", color: "black"}} fontSize={[ 'md', 'lg', ]} cursor='pointer' color='black' as={Button} rightIcon={<IoIosArrowDown />}>
             Account
           </MenuButton>
           <MenuList shadow='md' bg="white" zIndex='9'>
-            {userType === 'seller' && <Link to="/seller">  <MenuItem>Sell</MenuItem></Link>}
+            {userType === 'seller' && 
+            <div className="">
+              <Link to="/seller">  <MenuItem>Seller Dashboard</MenuItem></Link>
+              <Link to="/profile">  <MenuItem>Profile Page</MenuItem></Link>
+            </div>
+            }
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
             {userType !== 'seller' &&
-            <div className="">
-    <MenuItem >Download</MenuItem>
-    <MenuItem>Create a Copy</MenuItem>
-    <MenuItem>Mark as Draft</MenuItem>
-    <MenuItem>Delete</MenuItem>
-    <MenuItem>Attend a Workshop</MenuItem>
+            <div>
+              <MenuItem >Profile Page</MenuItem>
+              <MenuItem>Create a Copy</MenuItem>
+              <MenuItem>Mark as Draft</MenuItem>
+              <MenuItem>Delete</MenuItem>
+              <MenuItem>Attend a Workshop</MenuItem>
             </div>
             }
           </MenuList>
         </Menu>
-      </div>
+      </Box>
 
-      <div className=""> <Icon as={HiOutlineShoppingCart} boxSize={[6,7,8]} /> </div>
+      <Box className="" display={['none','none', 'block']}>
+        <Link to='/bookmarked' className=""> <Icon as={GiBookmarklet} boxSize={[6,7,8]} mt='1rem' /> </Link>
+      </Box>
+   
     </Box>
   );
 }

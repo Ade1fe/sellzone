@@ -99,7 +99,7 @@ const AddItemForm: React.FC = () => {
   };
 
   return (
-    <Box maxW="md" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="lg" className='texts'>
+    <Box w='90%' mx="auto" mt={5} p={5} shadow='base' className='texts'>
       <form onSubmit={handleSubmit}>
         <FormControl id="title" mb={4} isRequired>
           <FormLabel>Title</FormLabel>
@@ -129,7 +129,7 @@ const AddItemForm: React.FC = () => {
         </FormControl>
         {/* This input can be hidden if the userId is obtained from the authentication state */}
         <Input type="hidden" name="userId" value={item.userId} />
-        <Button type="submit" colorScheme="blue" width="full" disabled={loading}>
+        <Button type="submit" bg='green.600' _hover={{bg: "green.800"}} cursor='pointer' color='white' width="full" disabled={loading}>
           {loading ? <Spinner /> : "Add Item"}
         </Button>
       </form>

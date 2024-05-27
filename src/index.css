@@ -56,3 +56,11 @@ font-style: normal;
       transform: translateX(-50%) translateY(-50%) rotate(360deg);
   }
 }
+
+.hamburger {
+  transition: transform 0.3s ease-in-out;
+}
+
+.open {
+  transform: rotate(90deg);
+}

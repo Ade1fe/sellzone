@@ -22,7 +22,7 @@ const CategoryItemCard: React.FC<CategoryItemCardProps> = ({
 
 
   return (
-    <Box textAlign='center'onClick={handleClick} cursor='pointer' >
+    <Box textAlign='center'onClick={handleClick} cursor='pointer' mx='auto'>
         <Text display='none'>{id}</Text>
         <Image 
           boxSize='100px' 

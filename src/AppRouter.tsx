@@ -3,7 +3,7 @@
 // AppRouter.tsx
 import React, { useEffect, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AddItemForm, BookMarked, DisplayItem, Homepage, Landingpage, ListOfItems } from './pages';
+import { BookMarked, DisplayItem, Homepage, Landingpage, ListOfItems, ProfilePage } from './pages';
 import SellerDashboard from './pages/display/SellerDashboard';
 import { getAuth, User } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
@@ -44,7 +44,7 @@ const AppRouter = () => {
     { path: '/', element: <Landingpage /> },
     { path: 'homepage', element: <Homepage /> },
     { path: 'listofitem', element: <ListOfItems /> },
-    { path: 'admin', element: <AddItemForm /> },
+    { path: 'profile', element: <ProfilePage /> },
     { path: 'item', element: <DisplayItem /> },
     { path: 'bookmarked', element: <BookMarked /> },
     {

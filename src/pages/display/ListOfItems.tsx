@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { collection, query, where, getDocs, QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { ListOfItemCard } from '..';
+import { ListOfItemCard, SecondSection } from '..';
 import LayoutOne from '../../layout/LayoutOne';
 import { Box, Button, Image, Text, CircularProgress } from '@chakra-ui/react'; // Assuming CircularProgress is available from Chakra UI
 import { notfound } from '../../assets';
@@ -125,7 +125,7 @@ const ListOfItems = () => {
             </Box>
           ) : (
             <>
-              <Box style={{ display: 'flex', flexWrap: 'wrap' }}>
+              <Box style={{ display: 'flex', flexWrap: 'wrap' }} mt='5rem'>
                 {items.map((item) => (
                   <div key={item.id} >
                     <ListOfItemCard
@@ -142,6 +142,7 @@ const ListOfItems = () => {
               </Box>
               <Box mt='10rem' className="section" >
                 <Text fontSize={['lg', 'x-large']} textAlign='center' textTransform='capitalize' className='subtitle' fontWeight='800'>   related items </Text>
+                  <SecondSection />
               </Box>
             </>
           )}

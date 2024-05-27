@@ -72,7 +72,7 @@ const LatestUpdateCard: React.FC<CardProps> = ({ id, image, title, price, catego
     >
       <Image boxSize='220px' mx='auto' src={image} alt={title} onClick={handleNavigate} />
       <Flex justifyContent='space-between' alignItems='center' mt={3} px={5} w='220px'>
-        <Text fontSize='lg' fontWeight='bold'>{title}</Text>
+        <Text noOfLines={1}  fontSize='lg' fontWeight='bold'>{title}</Text>
         <IconButton
           aria-label='Bookmark'
           icon={<BiStar />}
@@ -81,8 +81,8 @@ const LatestUpdateCard: React.FC<CardProps> = ({ id, image, title, price, catego
           colorScheme={isBookmarked ? 'yellow' : 'gray'}
         />
       </Flex>
-      <Text mt={2} color='gray.500' w='220px' fontSize='sm' pb='3'>{price}</Text>
-      <Box>
+      <Text noOfLines={1}  mt={2} color='gray.500' w='220px' fontSize='sm' pb='3'>{price}</Text>
+      <Box display='none'>
         <Text mt={2} color='gray.500' w='220px' fontSize='sm' pb='3'>category: {category}</Text>
         <Text mt={2} color='gray.500' w='220px' fontSize='sm' pb='3'>subCategory: {subCategory}</Text>
         <Text mt={2} color='gray.500' w='220px' fontSize='sm' pb='3'>sellersID: {sellersID}</Text>

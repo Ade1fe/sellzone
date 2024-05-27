@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
 
   return (
     <Box bg={bg} color={color} py={10} mt='6rem'>
-      <Flex direction="column" maxW="6xl" mx="auto" px={6}>
+      <Flex direction="column" maxW='1400px' mx='auto' px={6}>
         <SimpleGrid columns={{ base: 1, md: 5 }} spacing={8} mb={10}>
           <Box>
             <Heading as="h4" size="md" mb={4}>About Us</Heading>

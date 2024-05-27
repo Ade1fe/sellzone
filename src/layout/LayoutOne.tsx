@@ -10,7 +10,7 @@ const LayoutOne: React.FC<LayoutOneProps> = ({ children }) => {
   return (
     <Box >
       <Navbar />
-      <div className="content">{children}</div>
+      <Box pt={['3rem','6rem', '8rem']} className="content">{children}</Box>
       <Footer />
     </Box>
   );
