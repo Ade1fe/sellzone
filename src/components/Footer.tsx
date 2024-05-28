@@ -18,19 +18,20 @@ const Footer: React.FC = () => {
           <Box>
             <Heading as="h4" size="md" mb={4}>Quick Links</Heading>
             <Stack spacing={3}>
-              <Link href="#">Home</Link>
-              <Link href="#">About</Link>
-              <Link href="#">Services</Link>
-              <Link href="#">Contact</Link>
+              <Link href="/">Home</Link>
+              <Link href="/about-page">About</Link>
+              <Link href="https://deife.netlify.app/">Blog</Link>
+              {/* <Link href="#">Services</Link>
+              <Link href="#">Contact</Link> */}
             </Stack>
           </Box>
           <Box>
             <Heading as="h4" size="md" mb={4}>Resources</Heading>
             <Stack spacing={3}>
-              <Link href="#">Blog</Link>
-              <Link href="#">FAQs</Link>
-              <Link href="#">Support</Link>
-              <Link href="#">Privacy Policy</Link>
+             
+              <Link href="/faq">FAQs</Link>
+              <Link href="/support-page">Support</Link>
+              <Link href="/private-page">Privacy Policy</Link>
             </Stack>
           </Box>
           <Box>

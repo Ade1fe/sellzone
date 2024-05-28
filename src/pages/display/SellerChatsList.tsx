@@ -79,20 +79,22 @@ const SellerChatsList: React.FC<{ sellerId: string }> = ({ sellerId }) => {
   };
 
   return (
-    <Box display="flex" maxHeight='400px'>
-      <Box w="30%" p={4} borderWidth="1px" borderRadius="lg" overflow="hidden">
-        <Text fontSize="xl" fontWeight="bold" mb={4}>Chats</Text>
+    <Box display={['block','block', "flex"]} shadow='base'>
+      <Box w={['full','full', "40%"]} p={4}  overflowY='auto'  borderRadius="lg" overflow="hidden">
+        <Text fontSize="xl"  noOfLines={1}  fontWeight="bold" mb={4}>Chats</Text>
         {chats.map((chat) => {
           const otherParticipantId = chat.participants.find(id => id !== sellerId);
           const otherParticipantName = otherParticipantId ? userNames[otherParticipantId] : 'Loading...';
 
           return (
-            <Box key={chat.id} mb={2} display="flex" justifyContent="space-between" alignItems="center">
-              <Button w="80%" onClick={() => setSelectedChatId(chat.id)}>
+            <Box overflowX='auto'  shadow='base' key={chat.id} mb={2} display="flex" justifyContent="space-between" alignItems="center">
+              <Button w="100%" bg='white' onClick={() => setSelectedChatId(chat.id)}>
                 Chat with {otherParticipantName}
               </Button>
               <IconButton
                 aria-label="Delete chat"
+                bg='red.700'
+                color='white'
                 icon={<BiTrash />}
                 onClick={() => handleDeleteChat(chat.id)}
               />
@@ -100,7 +102,7 @@ const SellerChatsList: React.FC<{ sellerId: string }> = ({ sellerId }) => {
           );
         })}
       </Box>
-      <Box w="70%" p={4}>
+      <Box w={['full','full', "60%"]} p={4} minH='500px' shadow='base' overflowY='auto'  bg='white'>
         {selectedChatId ? (
           <SellerChatComponent chatId={selectedChatId} userId={sellerId} />
         ) : (

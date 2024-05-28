@@ -82,7 +82,7 @@ const SellerChatComponent: React.FC<SellerChatComponentProps> = ({ chatId, userI
   };
 
   return (
-    <Box p={4} borderWidth="1px" borderRadius="lg" overflow="hidden" >
+    <Box p={4} shadow='base' borderRadius="lg" overflow="hidden" >
       <Box mb={4} overflowY="auto" maxHeight="400px">
         {messages.map((msg) => (
           <Box key={msg.id} mb={2} p={2} bg={msg.senderId === userId ? 'blue.100' : 'gray.100'} borderRadius="md">
@@ -96,8 +96,9 @@ const SellerChatComponent: React.FC<SellerChatComponentProps> = ({ chatId, userI
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your message..."
+          shadow='base'
         />
-        <Button ml={2} onClick={sendMessage}>
+        <Button ml={2} shadow='base' onClick={sendMessage}>
           Send
         </Button>
       </Box>

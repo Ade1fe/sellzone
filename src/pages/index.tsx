@@ -1,7 +1,11 @@
 export {default as Landingpage} from "./landinpage/Landingpage";
+export {default as AboutUsPage} from '../components/AboutUsPage';
+export {default as PrivacyPolicyPage}  from '../components/PrivacyPolicyPage';
+export {default as SupportPage} from '../components/SupportPage';
+export {default as FaqComp}  from '../components/FaqComp';
 export {default as ProfilePage} from './profile-page/ProfilePage';
 export {default as BookMarked} from './bookmarked/BookMarked';
-// export {default as BookmarkContext} from './bookmarked/BookmarkContext';
+// export {default as AboutUsPage} from './bookmarked/BookmarkContext';
 export {default as SafetyFirstComp} from '../components/SafetyFirstComp';
 export {default as DisplayItem} from './display/DisplayItem';
 export {default as Footer} from '../components/Footer';
@@ -24,6 +28,6 @@ export {default as Homepage} from './homepage/Homepage';
 export {default as HeroCarousel} from '../components/carousels/HeroCarousel';
 export {default as RegistrationForm}  from './auth/RegistrationForm';
 export {default as AddItemForm} from './admin/AddItemForm';
-// export {default as ProfilePage} from './admin/AddItemForm';
+// export {default as FaqComp} from './admin/AddItemForm';
 
 

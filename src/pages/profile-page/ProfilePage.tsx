@@ -171,7 +171,7 @@ const ProfilePage = () => {
                 />
               </FormControl>
 
-              <Button onClick={handleSaveChanges} mr="2">Save Changes</Button>
+              <Button onClick={handleSaveChanges} mr="4">Save Changes</Button>
               <Button onClick={handleEditToggle}>Cancel</Button>
             </Box>
           ) : (

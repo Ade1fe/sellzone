@@ -178,11 +178,11 @@ const DisplayComp: React.FC = () => {
   }
 
   return (
-    <Box p={5} display={['flex']} className='texts'  gap={['30px']} justifyContent='space-evenly' alignItems='start'>
-    <Box className="" w={['60%']}>
+    <Box p={5} display={['block', 'block', 'block', 'flex']} className='texts'  gap={['30px']} justifyContent='space-evenly' alignItems='start'>
+    <Box className="" w={['100%','100%','100%', '60%']}>
     <Text display='none'>Document ID: {id}</Text>
       <Box w='full' mb={4}>
-        <Image src={data.imageUrl || bagImg} w="full" h="full" objectFit="cover" bg="red" />
+        <Image src={data.imageUrl || bagImg} w="full" h="full" objectFit="cover" />
       </Box>
       <Box>
         <Text fontSize={['md', "lg"]} fontWeight="600" className='subtitle'>{data.title || 'Smart Wristwatch For iPhones And Android Phone'}</Text>
@@ -192,7 +192,7 @@ const DisplayComp: React.FC = () => {
         <Text fontSize={['md', "lg"]} display='none'>Seller ID: {data.userId || 'userId'}</Text>
       </Box>
     </Box>
-   <Box mt={4} p={3}  w={['30%']} className="" shadow='md'>
+   <Box mt={4} p={3}  w={['100%','100%','100%', '30%']} className="" shadow='md'>
    <Box >
         <Text fontSize="lg" fontWeight="bold">Seller's Information</Text>
         {data.sellerInfo ? (

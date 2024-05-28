@@ -114,20 +114,20 @@ const SellerDashboard: React.FC<{ sellerId: string }> = ({ sellerId }) => {
 
   return (
     <Box className='texts'>
-      <Box display='flex' w='full' justifyContent='space-evenly' alignItems='center' py='4' px='5'>
+      <Box display={['block', 'flex']} gap='4' w='full' justifyContent='space-evenly' alignItems='center' py='4' px='5'>
        <Link to="/homepage">
-       <Text as='span' fontSize={['lg', 'x-large', 'xx-large']} textShadow='1px 1px green' className='title'>
+       <Text as='span' fontSize={[ 'x-large', 'xx-large']} textShadow='1px 1px green' className='title'>
           SellZone
         </Text>
        </Link>
-        <Box w={['50%']}>
+        <Box w={['100%', '50%']} mt={['1rem', '0']}>
           <Input
             placeholder="Search items..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </Box>
-        <Button leftIcon={<BiPlus />} colorScheme='teal' onClick={onOpen}>
+        <Button w={['full', 'max-content']} mt={['1rem', '0']} leftIcon={<BiPlus />} colorScheme='teal' onClick={onOpen}>
           Add Item
         </Button>
       </Box>
@@ -145,7 +145,7 @@ const SellerDashboard: React.FC<{ sellerId: string }> = ({ sellerId }) => {
       </Drawer>
       <Box mt={6} mx='auto' maxWidth='1500px'>
         <SellerChatsList sellerId={sellerId} />
-        <TableContainer mt='8rem' px='15px' overflowY='auto' maxHeight="calc(100vh - 200px)">
+        <TableContainer mt='10rem' px='15px' overflowY='auto' maxHeight="calc(100vh - 200px)">
           <Text fontSize={['lg', 'x-large', 'xx-large']} mb='2rem' textAlign='center' className='subtitle'>
             Products by seller
           </Text>

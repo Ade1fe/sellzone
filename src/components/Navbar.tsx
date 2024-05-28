@@ -62,7 +62,7 @@ const Navbar: React.FC = () => {
           <MenuButton bg='transparent' _hover={{bg: "transparent", color: "black"}} fontSize={[ 'md', 'lg', ]} cursor='pointer' color='black' as={Button} rightIcon={<IoIosArrowDown />}>
             Account
           </MenuButton>
-          <MenuList shadow='md' bg="white" zIndex='9'>
+          <MenuList shadow='md' bg="white" zIndex='9999'>
             {userType === 'seller' && 
             <div className="">
               <Link to="/seller">  <MenuItem>Seller Dashboard</MenuItem></Link>
