@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import  { useState, useRef } from 'react';
 import { Box, Button, Input, List, ListItem, Image, Text, Spinner } from '@chakra-ui/react';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -7,6 +7,7 @@ import { notfound } from '../assets';
 
 const NavbarSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ const NavbarSearch = () => {
       const titleSnapshot = await getDocs(titleQuery);
       
       // Merge the results
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const results: any[] = [];
       categorySnapshot.forEach(doc => {
         const data = doc.data();
@@ -61,7 +63,7 @@ const NavbarSearch = () => {
       setLoading(false);
     }
   };
-
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleNavigate = (id: any) => {
     console.log("Document ID:", id);
     navigate('/item', { state: { id } });

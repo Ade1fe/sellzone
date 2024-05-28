@@ -1,5 +1,5 @@
 // landingpage
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Button, Center, Divider, Heading, Text, VStack } from '@chakra-ui/react';
 import { RegistrationForm } from '..';
 import LoginForm from '../auth/LoginForm';

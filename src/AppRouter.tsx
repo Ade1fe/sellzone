@@ -1,7 +1,7 @@
 
 
 // AppRouter.tsx
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { AboutUsPage, BookMarked, DisplayItem, FaqComp, Homepage, Landingpage, ListOfItems, PrivacyPolicyPage, ProfilePage, SupportPage } from './pages';
 import SellerDashboard from './pages/display/SellerDashboard';

@@ -21,7 +21,7 @@ const Sidebarcomp: React.FC<CategoryItemCardProps> = ({
   const navigate = useNavigate();
   const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [, setLoading] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+  // const [showMenu, setShowMenu] = useState(false);
 
   const fetchCategories = async () => {
     setLoading(true);
@@ -63,6 +63,8 @@ const Sidebarcomp: React.FC<CategoryItemCardProps> = ({
 
   useEffect(() => {
     fetchCategories();
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCategoryClick = (category: string) => {

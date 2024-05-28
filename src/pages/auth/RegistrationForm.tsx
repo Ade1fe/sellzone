@@ -96,7 +96,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType, onSubmit 
       await setDoc(doc(db, 'users', user.uid), userDoc);
       console.log('User registered successfully:', userDoc);
       onSubmit(userDoc);
-      navigate('/homepage');
+    
       toast({
         title: 'Welcome to SellZone',
         description: 'User registered successfully',
@@ -104,7 +104,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType, onSubmit 
         duration: 3000,
         isClosable: true,
       });
-     
+      navigate('homepage');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error:any) {
       console.error('Error registering user:', error.message);
@@ -117,7 +117,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType, onSubmit 
       });
    
     } finally {
-      setIsLoading(false); // Reset loading state regardless of success or failure
+      setIsLoading(false); 
     }
   };
 

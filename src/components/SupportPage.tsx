@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Box, Heading, Text, Divider, Link, UnorderedList, ListItem } from '@chakra-ui/react';
 import LayoutOne from '../layout/LayoutOne';
 
