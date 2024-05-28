@@ -79,7 +79,7 @@ const ProfilePage = () => {
 
   return (
   <LayoutOne>
-      <Box p="4" pos='relative'>
+      <Box p="4" pos='relative' className='texts'>
       {currentUser && userData && (
         <Box>
             <Box className="" w='full' h='150px'>
@@ -100,15 +100,15 @@ const ProfilePage = () => {
 <Box display={['block', 'block', 'flex']} gap='4' mt='9rem' maxWidth='1400px' mx='auto' className="" >
 <Box  className="" w={['full', 'full', '50%']}>
    {userData.businessType && (
-            <Text fontSize={["md", 'lg',]}>Bio: {userData.bio}</Text>
+            <Text fontSize={["md", 'lg',]} mb='0.5rem'>Bio: {userData.bio}</Text>
           )}
-          <Text fontSize={["md", 'lg',]}>House Address: {userData.houseAddress}</Text>
-          <Text fontSize={["md", 'lg',]}>Phone Number: {userData.phoneNumber}</Text>
+          <Text fontSize={["md", 'lg',]} mb='0.5rem'>House Address: {userData.houseAddress}</Text>
+          <Text fontSize={["md", 'lg',]} mb='0.5rem'>Phone Number: {userData.phoneNumber}</Text>
           {userData.businessType && (
-            <Text fontSize={["md", 'lg',]}> Business Type: {userData.businessType}</Text>
+            <Text fontSize={["md", 'lg',]} mb='0.5rem'> Business Type: {userData.businessType}</Text>
           )}
           {userData.businessName && (
-            <Text fontSize={["md", 'lg',]}>Business Name: {userData.businessName}</Text>
+            <Text fontSize={["md", 'lg',]} mb='0.5rem'>Business Name: {userData.businessName}</Text>
           )}
           <Button mt="4" leftIcon={<BiEditAlt />} onClick={handleEditToggle}>Edit Profile</Button>
    </Box>
