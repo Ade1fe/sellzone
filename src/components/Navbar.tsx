@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Icon, Text, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
+import { Box, Button, Icon, Text, Menu, MenuButton, MenuList, MenuItem, useToast } from '@chakra-ui/react';
 import { IoIosArrowDown } from "react-icons/io";
 import { getAuth, signOut, User } from 'firebase/auth';
 import { getDoc, doc, getFirestore } from 'firebase/firestore';
@@ -13,6 +13,7 @@ const Navbar: React.FC = () => {
   const [, setUser] = useState<User | null>(null);
   const [, setError] = useState<string | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -26,6 +27,7 @@ const Navbar: React.FC = () => {
             setUserType(userData.userType);
           }
         }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error:any) {
         setError(error.message);
         console.error('Error fetching user data:', error.message);
@@ -39,6 +41,14 @@ const Navbar: React.FC = () => {
     try {
       await signOut(auth);
       console.log('User logged out successfully');
+      toast({
+        title: 'Welcome to SellZone',
+        description: 'User logged out successfully',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error:any) {
       setError(error.message);
       console.error('Error logging out:', error.message);

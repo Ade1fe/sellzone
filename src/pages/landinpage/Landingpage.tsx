@@ -7,10 +7,11 @@ import LoginForm from '../auth/LoginForm';
 const Landingpage = () => {
   const [userType, setUserType] = useState('buyer');
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleRegistration = (userData: any) => {
     console.log('User registered:', userData);
   };
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleLogin = (credentials: any) => {
     console.log('User logged in:', credentials);
   };

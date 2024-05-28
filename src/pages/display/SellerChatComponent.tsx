@@ -12,6 +12,7 @@ interface SellerChatComponentProps {
 
 const SellerChatComponent: React.FC<SellerChatComponentProps> = ({ chatId, userId }) => {
   const [message, setMessage] = useState('');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [messages, setMessages] = useState<any[]>([]);
   const [sellerName, setSellerName] = useState<string>('');
 

@@ -20,8 +20,10 @@ import { bioImg } from '../../assets';
 const ProfilePage = () => {
   const auth = getAuth();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [userData, setUserData] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [editedUserData, setEditedUserData] = useState<any>({});
 
   useEffect(() => {
@@ -39,6 +41,7 @@ const ProfilePage = () => {
             setEditedUserData(docSnap.data());
           }
         }
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.error('Error fetching user data:', error.message);
       }
@@ -62,11 +65,13 @@ const ProfilePage = () => {
     try {
       if (auth.currentUser) {
         const docRef = doc(getFirestore(), 'users', auth.currentUser.uid);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await updateDoc(docRef as DocumentReference<any>, editedUserData);
         setIsEditing(false);
         setUserData(editedUserData); // Update userData with edited data
         console.log('User data updated successfully');
       }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Error updating user data:', error.message);
     }

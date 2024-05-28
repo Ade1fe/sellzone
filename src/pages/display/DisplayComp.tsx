@@ -17,10 +17,12 @@ const DisplayComp: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = (location.state as LocationState) || {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [chatId, setChatId] = useState<string | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [messages, setMessages] = useState<any[]>([]);
   const [message, setMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -118,6 +120,7 @@ const DisplayComp: React.FC = () => {
       const unsubscribeMessages = onSnapshot(
         query(collection(db, 'chats', chatId, 'messages'), orderBy('timestamp', 'asc')),
         (querySnapshot) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const newMessages: any[] = [];
           querySnapshot.forEach((doc) => {
             newMessages.push(doc.data());
