@@ -25,6 +25,7 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [editedUserData, setEditedUserData] = useState<any>({});
+  const [bio, setBio] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -54,12 +55,25 @@ const ProfilePage = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedUserData({
-      ...editedUserData,
-      [e.target.name]: e.target.value
-    });
+  const handleInputChange = (e: React.FormEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const name = target.getAttribute('name');
+    if (name) {
+      const value = target.innerText; 
+      setEditedUserData({
+        ...editedUserData,
+        [name]: value
+      });
+    }
   };
+  
+  const handleContentChange: React.FormEventHandler<HTMLDivElement> = (e) => {
+    const target = e.target as HTMLDivElement;
+    const bioText = target.innerText.replace(/\n/g, '<br>');
+    setBio(bioText);
+  };
+  
+  
 
   const handleSaveChanges = async () => {
     try {
@@ -99,9 +113,15 @@ const ProfilePage = () => {
    
 <Box display={['block', 'block', 'flex']} gap='4' mt='9rem' maxWidth='1400px' mx='auto' className="" >
 <Box  className="" w={['full', 'full', '50%']}>
-   {userData.businessType && (
-            <Text fontSize={["md", 'lg',]} mb='0.5rem'>Bio: {userData.bio}</Text>
-          )}
+{userData.bio && (
+  <Text
+    fontSize={["md", 'lg']}
+    mb='0.5rem'
+    style={{ whiteSpace: 'pre-wrap' }}
+    dangerouslySetInnerHTML={{ __html: `Bio: ${userData.bio.replace(/\.(?=\s|$)/g, '.<br>')}` }}
+  />
+)}
+
           <Text fontSize={["md", 'lg',]} mb='0.5rem'>House Address: {userData.houseAddress}</Text>
           <Text fontSize={["md", 'lg',]} mb='0.5rem'>Phone Number: {userData.phoneNumber}</Text>
           {userData.businessType && (
@@ -117,13 +137,19 @@ const ProfilePage = () => {
             <Box mt={[ '4','6','0']} >
                   <FormControl mb="2">
                   <FormLabel>Bio</FormLabel>
-                  <Input
-                    type="text"
-                    name="bio"
-                    value={editedUserData.bio || ''}
-                    onChange={handleInputChange}
-                    w='full'
-                  />
+                  <Box
+                  contentEditable='true'
+                  className="scroll"
+                  onInput={handleContentChange}
+                  px='10px'
+                  py='10px'
+                  color='gray.400'
+                  _placeholder={{ opacity: 1, color: 'gray.400', fontSize: ['16px', '24px'] }}
+                  fontSize={['16px', '24px']}
+                  style={{ minHeight: '50px', color: 'gray.500', overflowY: 'auto', whiteSpace: 'pre-wrap' }}
+                  border='none'
+                  _focus={{ border: 'none' }}
+                />
                 </FormControl>
               <FormControl mb="2">
                 <FormLabel>Name</FormLabel>
