@@ -196,7 +196,7 @@ const SellerDashboard: React.FC<{ sellerId: string }> = ({ sellerId }) => {
                         item.price
                       )}
                     </Td>
-                    <Td>
+                    <Td noOfLines={1}>
                       {editingItemId === item.id ? (
                         <Input
                           value={editForm.description || ''}

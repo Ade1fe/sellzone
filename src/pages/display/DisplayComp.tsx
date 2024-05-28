@@ -190,7 +190,13 @@ const DisplayComp: React.FC = () => {
       <Box>
         <Text fontSize={['md', "lg"]} fontWeight="600" className='subtitle'>{data.title || 'Smart Wristwatch For iPhones And Android Phone'}</Text>
         <Text fontSize="sm" color="gray.500">{data.postedDate || 'Posted 13 04 2024 12:3am'}</Text>
-        <Text fontSize={['md', "lg"]}>Description: {data.description || 'This is a placeholder description for the product.'}</Text>
+        {/* <Text fontSize={['md', "lg"]}>Description: {data.description || 'This is a placeholder description for the product.'}</Text> */}
+        <Text
+    fontSize={["md", 'lg']}
+    mb='0.5rem'
+    style={{ whiteSpace: 'pre-wrap' }}
+    dangerouslySetInnerHTML={{ __html: `Description: ${data.description.replace(/\.(?=\s|$)/g, '.<br>')}` }}
+  />
         <Text fontSize={['md', "lg"]}>Price: # {data.price || '$99.99'}</Text>
         <Text fontSize={['md', "lg"]} display='none'>Seller ID: {data.userId || 'userId'}</Text>
       </Box>
