@@ -203,7 +203,7 @@ const DisplayComp: React.FC = () => {
     <Box className="" w={['100%','100%','100%', '60%']}>
     <Text display='none'>Document ID: {id}</Text>
       <Box w='full' mb={4} h={['full','450px','500px', '550px', '600px']}>
-        <Image src={data.imageUrl || bagImg} w="full" h="full" objectFit="cover" />
+        <Image src={data.imageUrl || bagImg} w="full" h={['full','450px','500px', '550px', '600px']} objectFit="cover" />
       </Box>
       <Box>
         <Text fontSize={['md', "lg"]} fontWeight="600" className='subtitle'>{data.title || 'Smart Wristwatch For iPhones And Android Phone'}</Text>
