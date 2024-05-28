@@ -180,6 +180,24 @@ const DisplayComp: React.FC = () => {
     return <Text>No data found</Text>;
   }
 
+  const formatTimestamp = (timestamp: string | number | Date) => {
+    if (!timestamp) return '';
+    
+    const date = new Date(timestamp);
+    const options = { 
+      month: 'short' as const, 
+      day: '2-digit' as const, 
+      year: 'numeric' as const, 
+      hour: '2-digit' as const, 
+      minute: '2-digit' as const, 
+      hour12: true 
+    };
+    
+    return date.toLocaleString('en-US', options);
+  };
+  
+  
+
   return (
     <Box p={5} display={['block', 'block', 'block', 'flex']} className='texts'  gap={['30px']} justifyContent='space-evenly' alignItems='start'>
     <Box className="" w={['100%','100%','100%', '60%']}>
@@ -189,9 +207,10 @@ const DisplayComp: React.FC = () => {
       </Box>
       <Box>
         <Text fontSize={['md', "lg"]} fontWeight="600" className='subtitle'>{data.title || 'Smart Wristwatch For iPhones And Android Phone'}</Text>
-        <Text fontSize="sm" color="gray.500">{data.postedDate || 'Posted 13 04 2024 12:3am'}</Text>
+        {/* <Text fontSize="sm" color="gray.500">{data.postedDate || 'Posted 13 04 2024 12:3am'}</Text> */}
         {/* <Text fontSize={['md', "lg"]}>Description: {data.description || 'This is a placeholder description for the product.'}</Text> */}
-        <Text
+        <Text fontSize="sm" color="gray.500">Posted:  {formatTimestamp(data.timestamp.toDate()) || 'Posted 13 04 2024 12:3am'}</Text>
+       <Text
     fontSize={["md", 'lg']}
     mb='0.5rem'
     style={{ whiteSpace: 'pre-wrap' }}
