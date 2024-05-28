@@ -202,7 +202,7 @@ const DisplayComp: React.FC = () => {
     <Box p={5} display={['block', 'block', 'block', 'flex']} className='texts'  gap={['30px']} justifyContent='space-evenly' alignItems='start'>
     <Box className="" w={['100%','100%','100%', '60%']}>
     <Text display='none'>Document ID: {id}</Text>
-      <Box w='full' mb={4}>
+      <Box w='full' mb={4} h={['full','450px','500px', '550px', '600px']}>
         <Image src={data.imageUrl || bagImg} w="full" h="full" objectFit="cover" />
       </Box>
       <Box>
