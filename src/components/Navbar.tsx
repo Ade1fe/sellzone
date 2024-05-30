@@ -3,7 +3,7 @@ import { Box, Button, Icon, Text, Menu, MenuButton, MenuList, MenuItem, useToast
 import { IoIosArrowDown } from "react-icons/io";
 import { getAuth, signOut, User } from 'firebase/auth';
 import { getDoc, doc, getFirestore } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NavbarSearch from './NavbarSearch';
 import { GiBookmarklet } from 'react-icons/gi';
 import { Sidebarcomp } from '../pages';
@@ -14,6 +14,7 @@ const Navbar: React.FC = () => {
   const [, setError] = useState<string | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -42,12 +43,13 @@ const Navbar: React.FC = () => {
       await signOut(auth);
       console.log('User logged out successfully');
       toast({
-        title: 'Welcome to SellZone',
+        title: 'oh oh ... ',
         description: 'User logged out successfully',
         status: 'success',
         duration: 5000,
         isClosable: true,
       });
+      navigate("/")
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error:any) {
       setError(error.message);
@@ -82,11 +84,7 @@ const Navbar: React.FC = () => {
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
             {userType !== 'seller' &&
             <div>
-              <MenuItem >Profile Page</MenuItem>
-              <MenuItem>Create a Copy</MenuItem>
-              <MenuItem>Mark as Draft</MenuItem>
-              <MenuItem>Delete</MenuItem>
-              <MenuItem>Attend a Workshop</MenuItem>
+              <Link to="/profile">  <MenuItem>Profile Page</MenuItem></Link> 
             </div>
             }
           </MenuList>
