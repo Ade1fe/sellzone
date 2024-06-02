@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Center, Button, Box, Heading } from "@chakra-ui/react";
 import RegistrationForms from "../auth/RegistrationForms";
 import LoginForms from '../auth/LoginForms';
